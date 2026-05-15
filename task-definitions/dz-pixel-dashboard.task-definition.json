@@ -1,0 +1,46 @@
+{
+  "family": "td-dashboard-svc",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "1024",
+  "memory": "2048",
+  "executionRoleArn": "arn:aws:iam::182086865009:role/ecsTaskExecutionRole",
+  "taskRoleArn":      "arn:aws:iam::182086865009:role/pixel-task-role",
+  "containerDefinitions": [
+    {
+      "name": "dashboard",
+      "image": "PLACEHOLDER_REPLACED_BY_WORKFLOW",
+      "essential": true,
+      "portMappings": [
+        { "containerPort": 8080, "protocol": "tcp" }
+      ],
+      "environment": [
+        { "name": "PORT",        "value": "8080" },
+        { "name": "CORS_ORIGIN", "value": "https://www.pixel.example.com" }
+      ],
+      "secrets": [
+        { "name": "PG_HOST",     "valueFrom": "arn:aws:secretsmanager:ap-south-1:182086865009:secret:pixel/postgres:host::" },
+        { "name": "PG_PORT",     "valueFrom": "arn:aws:secretsmanager:ap-south-1:182086865009:secret:pixel/postgres:port::" },
+        { "name": "PG_USER",     "valueFrom": "arn:aws:secretsmanager:ap-south-1:182086865009:secret:pixel/postgres:user::" },
+        { "name": "PG_PASSWORD", "valueFrom": "arn:aws:secretsmanager:ap-south-1:182086865009:secret:pixel/postgres:password::" },
+        { "name": "PG_DB",       "valueFrom": "arn:aws:secretsmanager:ap-south-1:182086865009:secret:pixel/postgres:db_admin::" }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group":         "/ecs/pixel-prod",
+          "awslogs-region":        "ap-south-1",
+          "awslogs-stream-prefix": "dashboard",
+          "awslogs-create-group":  "true"
+        }
+      },
+      "healthCheck": {
+        "command":     ["CMD-SHELL", "curl -fsS http://localhost:8080/healthz || exit 1"],
+        "interval":    30,
+        "timeout":     5,
+        "retries":     3,
+        "startPeriod": 15
+      }
+    }
+  ]
+}
