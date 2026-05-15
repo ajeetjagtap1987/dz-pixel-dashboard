@@ -16,7 +16,7 @@
       ],
       "environment": [
         { "name": "PORT",        "value": "8080" },
-        { "name": "CORS_ORIGIN", "value": "https://www.pixel.example.com" }
+        { "name": "CORS_ORIGIN", "value": "https://app.adviksolutions.co.in" }
       ],
       "secrets": [
         { "name": "PG_HOST",     "valueFrom": "arn:aws:secretsmanager:ap-south-1:182086865009:secret:pixel/postgres:host::" },
