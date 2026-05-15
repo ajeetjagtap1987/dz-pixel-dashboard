@@ -2,8 +2,8 @@
   "family": "td-dashboard-svc",
   "networkMode": "awsvpc",
   "requiresCompatibilities": ["FARGATE"],
-  "cpu": "1024",
-  "memory": "2048",
+  "cpu": "256",
+  "memory": "512",
   "executionRoleArn": "arn:aws:iam::182086865009:role/ecsTaskExecutionRole",
   "taskRoleArn":      "arn:aws:iam::182086865009:role/pixel-task-role",
   "containerDefinitions": [
